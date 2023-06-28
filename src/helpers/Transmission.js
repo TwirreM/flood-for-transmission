@@ -41,7 +41,7 @@ export default class Transmission {
       method: 'post',
       headers,
     });
-    this._tokenHeader = response.headers.get('X-Transmission-Session-Id');
+    this._tokenHeader = response.headers.get(TOKEN_HEADER);
   }
 
   async rpcCall(method, args = {}) {
@@ -65,6 +65,7 @@ export default class Transmission {
         headers,
       });
       if (!response.ok) {
+        this._tokenHeader = null;
         throw new Error(response.statusText);
       }
       const output = await response.json();
